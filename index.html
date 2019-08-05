@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>PDF Tool</title>
+    <link rel="stylesheet" href="../bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script type="text/javascript" src="../jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../bootstrap/dist/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <form class="form form-inline col-12" method="post" enctype="multipart/form-data" id='uploadform'>
+          <div class="row border m-auto p-2">
+            <h2 class="col-12 m-auto">Select file(s) to process</h2>
+            <span class="my-5"></span>
+            <label for="pdf" class="col-12"></label>
+            <input type="file" name="pdf[]" value="" class="col-xs-12 col-lg-6 form-control m-auto" multiple id="pdf">
+            <select class="col-xs-12 col-lg-4 m-auto form-control" name="action" id='action'>
+              <option value="">Select an action to perform</option>
+              <option value="compress">Compress PDF</option>
+              <option value="merge">Merge PDF</option>
+              <option value="split">Split PDF</option>
+              <option value="imagepdf">Convert image to PDF</option>
+              <option value="officepdf">Convert MS Office file to PDF</option>
+            </select>
+            <input type="submit" name="proceed" value="Proceed" class="btn btn-info col-xs-12 col-lg-1 m-auto form-control">
+          </div>
+        </form>
+        <div class="col-11 my-5 mx-auto border p-2" id="content">
+          <h3 class="alert alert-warning alert-dismissible" id="feedback" role='alert'></h3>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    $("#feedback").hide();
+    $(document).ready(function() {
+     $("#uploadform").submit(function(event) {
+       event.preventDefault();
+       var action = $("#action").val()
+       if (!action) {
+         $("#feedback").show()
+         $("#feedback").html("No action selected. You must select an action to proceed!")
+       }
+       else {
+         $("#feedback").hide()
+         if (action =="merge") {
+           $.ajax({
+             url: 'merge.php',
+             data: new FormData(this),
+             type: 'POST',
+             contentType: false,
+             processData: false,
+             success: function(result) {
+               console.log(result)
+
+               // location.href = "merge.php";
+             }
+           })
+         }
+         else if (action =="compress") {
+           $.ajax({
+             url: 'compress.php',
+             data: new FormData(this),
+             type: 'POST',
+             contentType: false,
+             processData: false,
+             success: function(result) {
+               $("#content:last-child").empty();
+               var lin = "<h5>Download your file(s):</h5><a href='"+ result +"'>"+ result +"</a>"
+               $("#content").append(lin)
+               console.log(result)
+               // location.href = "merge.php";
+             }
+           })
+         }
+         else if (action =="imagepdf") {
+           $.ajax({
+             url: 'imagetopdf.php',
+             data: new FormData(this),
+             type: 'POST',
+             contentType: false,
+             processData: false,
+             success: function(result) {
+               $("#content:last-child").empty();
+               var lin = "<h5>Download your file(s):</h5><a href='"+ result +"'>"+ result +"</a>"
+               $("#content").append(lin)
+               console.log(result)
+               // location.href = "merge.php";
+             }
+           })
+         }
+         else if (action =="split") {
+           $.ajax({
+             url: 'split.php',
+             data: new FormData(this),
+             type: 'POST',
+             contentType: false,
+             processData: false,
+             success: function(result) {
+               $("#content:last-child").empty();
+               var lin = "<h5>Download your file(s):</h5><a href='"+ result +"'>"+ result +"</a>"
+               $("#content").append(lin)
+               console.log(result)
+               // location.href = "merge.php";
+             }
+           })
+         }
+         else if (action =="officepdf") {
+           $.ajax({
+             url: 'officetopdf.php',
+             data: new FormData(this),
+             type: 'POST',
+             contentType: false,
+             processData: false,
+             success: function(result) {
+               $("#content:last-child").empty();
+               var lin = "<h5>Download your file(s):</h5><a href='"+ result +"'>"+ result +"</a>"
+               $("#content").append(lin)
+               console.log(result)
+               // location.href = "merge.php";
+             }
+           })
+         }
+       }
+     })
+    })
+  </script>
+</html>
