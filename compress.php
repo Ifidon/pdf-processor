@@ -4,7 +4,7 @@ require_once  './ilovepdf-php/init.php';
 $n = 0;
 
 $usrip = $_SERVER["REMOTE_ADDR"];
-$pth = "c:/sites/pdfuploads/".str_replace(":", "-", $usrip)."/";
+$pth = "./pdfuploads/".str_replace(":", "-", $usrip)."/";
 
 is_dir($pth)?  : mkdir($pth, 0777, true);
 
