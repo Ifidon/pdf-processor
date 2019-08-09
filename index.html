@@ -71,8 +71,9 @@
              processData: false,
              success: function(result) {
                $("#content:last-child").empty();
-               var lin = "<h5>Download your file(s):</h5><a href='"+ result +"'>"+ result +"</a>"
+               var lin = "<h5>Download your file(s):</h5>"
                $("#content").append(lin)
+               $("#content").append(result);
                console.log(result)
                // location.href = "merge.php";
              }
